@@ -1,0 +1,86 @@
+Amazon RDS Performance Insight
+
+Amazon RDS Performance Insights helps monitor your database instance load, allowing you to analyze and troubleshoot your database performance.
+
+### Key Concepts
+- Database Load: 
+  - Represents the average number of active sessions for the database engine.
+  - Collected every second.
+  - An active session is a connection that has submitted work to the database and is waiting for a response.
+
+- Turning Performance Insights On or Off:
+  - Can be enabled or disabled during DB instance creation.
+  - No downtime, reboot, or failover required.
+  - Performance Insights agent consumes limited CPU and memory on the database host.
+  - When the database load is high, the agent limits data collection frequency.
+
+### Enabling or Disabling Performance Insights
+To turn on or off Performance Insights for a DB instance:
+
+1. Sign in to the AWS Management Console.
+2. Open the Amazon RDS console at https://console.aws.amazon.com/rds.
+3. Choose Databases.
+4. Select a DB instance and choose Modify.
+5. In the Performance Insights section, choose either:
+   - Enable Performance Insights or
+   - Disable Performance Insights.
+
+If you choose to enable Performance Insights, you can configure the following options:
+- Retention:
+  - Default (7 days) in the free tier.
+  - Specify retention period from 1 to 24 months for longer data storage.
+  
+- AWS KMS Key:
+  - Performance Insights encrypts data using your AWS KMS key. Data is encrypted in flight and at rest.
+
+### Performance Insights Sections
+1. Performance Counter Metrics  
+   - Counter Metrics Chart: Displays data for performance counters. The default metric `blks_read.avg` is shown. You can select which performance counters to display by clicking the gear icon in the upper-right corner of the chart.
+
+2. Average Active Sessions Chart  
+   - Shows database load versus DB instance capacity (Max CPU line). 
+   - By default, the load is grouped by wait states. You can also display the load by SQL queries, hosts, or users.
+
+3. Top SQL Interface  
+   - Displays the load by waits for specific SQL statements, sorted from most to least.
+
+4. Top Load Items Table  
+   - Shows the top items contributing to database load. By default, top SQL queries are shown.
+   - Displays queries as digests (grouping similar queries with different parameters).
+   - You can also display top wait states, hosts, or users.
+   - Top SQL: View the impact of SQL statements on CPU.
+
+- Wait Events:  
+  - Wait events occur when SQL statement operations wait for an event before continuing. For example, a wait could happen if a resource is locked.
+
+### Performance Insights Metrics Sent to CloudWatch
+Metrics can be queried from Performance Insights, but storing them in CloudWatch allows you to set alarms.
+
+| Metric       | Description                                                                                      
+|--------------|--------------------------------------------------------------------------------------------------
+| DBLoad       | Number of active sessions for the database engine. Typically, this is the average number of active sessions. Queried as `db.load.avg` in Performance Insights. 
+| DBLoadCPU    | Active sessions where the wait event type is CPU. Shows how much time connections were running or ready to run on CPU. Queried as `db.load.avg` filtered by the CPU wait event.
+| DBLoadNonCPU | Active sessions where the wait event type is not CPU. Shows time spent waiting for resources like I/O, locks, or buffers. 
+
+Note: Metrics are published to CloudWatch only if there is load on the DB instance.
+
+- DBLoadCPU is the clearest metric for setting an alert:
+  - If there are more connections than vCPUs on the server, some connections wait for CPU resources.
+  - If the number of active connections stays higher than the number of vCPUs, you know there's CPU contention.
+  - You can scale up the server or optimize the code to reduce CPU demand.
+
+### Setting an Alert for DBLoadCPU
+To set an alert for DBLoadCPU for an instance with Performance Insights enabled:
+
+1. Open the CloudWatch Console and choose Alarms.
+2. Choose Create Alarm.
+3. Type DBLoadCPU in the search box.
+4. Choose the DB instances for which you want to set the alarm.
+5. Name the alert and set the threshold.
+   - The alert is triggered when CPU demand exceeds available CPU resources (represented by the max vCPU line in the Performance Insights dashboard).
+   
+6. Under Actions, set up a notification (e.g., email) to be alerted when CPU resources are saturated.
+
+When the alarm is triggered, you can either:
+- Optimize the code to reduce CPU usage.
+- Consider migrating to a larger instance size to meet CPU demand.

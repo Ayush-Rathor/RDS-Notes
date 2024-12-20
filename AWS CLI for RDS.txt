@@ -1,0 +1,438 @@
+Gathering Information using the AWS Command Line Interface (CLI)
+CLI commands for gathering Amazon RDS information
+
+The following command line CLI commands help collect information for troubleshooting.
+
+To learn more, expand each of the following nine categories.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+describe-db-instances
+–
+This command returns information about provisioned DB instances.
+
+
+
+Example
+
+
+
+aws rds describe-db-instances --db-instance-identifier mydbinstancecf
+
+{
+
+    "DBInstances": [
+
+        {
+
+            "DBInstanceIdentifier": "mydbinstancecf",
+
+            "DBInstanceClass": "db.t3.small",
+
+            "Engine": "mysql",
+
+            "DBInstanceStatus": "available",
+
+            "MasterUsername": "masterawsuser",
+
+            "Endpoint": {
+
+                "Address": "mydbinstancecf.abcexample.us-east-1.rds.amazonaws.com",
+
+                "Port": 3306,
+
+                "HostedZoneId": "Z2R2ITUGPM61AM"
+
+            },
+
+            ...some output truncated...
+
+        }
+
+    ]
+
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-engine-versions
+–
+This command describes the properties of specific versions of DB engines.
+
+
+
+Example
+
+
+
+aws rds describe-db-engine-versions --engine mysql 
+
+{
+"DBEngineVersions": [
+{
+"Engine": "mysql",
+"EngineVersion": "5.5.46",
+"DBParameterGroupFamily": "mysql5.5",
+"DBEngineDescription": "MySQL Community Edition",
+"DBEngineVersionDescription": "MySQL 5.5.46",
+"ValidUpgradeTarget": [
+{
+"Engine": "mysql",
+"EngineVersion": "5.5.53",
+"Description": "MySQL 5.5.53",
+"AutoUpgrade": false,
+"IsMajorVersionUpgrade": false
+},
+{
+"Engine": "mysql",
+"EngineVersion": "5.5.54",
+"Description": "MySQL 5.5.54",
+"AutoUpgrade": false,
+"IsMajorVersionUpgrade": false
+},
+{
+"Engine": "mysql",
+"EngineVersion": "5.5.57",
+"Description": "MySQL 5.5.57",
+"AutoUpgrade": false,
+"IsMajorVersionUpgrade": false
+},
+...some output truncated...
+]
+ }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-parameter-groups
+–
+This command returns a list of DBParameterGroup descriptions. If a DBParameterGroupName is specified, the list will contain only the description of the specified DB parameter group.
+
+
+
+Example
+
+
+
+aws rds describe-db-parameter-groups
+
+{
+"DBParameterGroups": [
+{
+"DBParameterGroupName": "default.aurora-mysql5.7",
+"DBParameterGroupFamily": "aurora-mysql5.7",
+"Description": "Default parameter group for aurora-mysql5.7",
+"DBParameterGroupArn": "arn:aws:rds:us-east-1:123456789012:pg:default.aurora-mysql5.7"
+},
+{
+"DBParameterGroupName": "default.aurora-postgresql9.6",
+"DBParameterGroupFamily": "aurora-postgresql9.6",
+"Description": "Default parameter group for aurora-postgresql9.6",
+"DBParameterGroupArn": "arn:aws:rds:us-east-1:123456789012:pg:default.aurora-postgresql9.6"
+},
+{
+"DBParameterGroupName": "default.aurora5.6",
+"DBParameterGroupFamily": "aurora5.6",
+"Description": "Default parameter group for aurora5.6",
+"DBParameterGroupArn": "arn:aws:rds:us-east-1:123456789012:pg:default.aurora5.6"
+},
+{
+"DBParameterGroupName": "default.mariadb10.1",
+"DBParameterGroupFamily": "mariadb10.1",
+"Description": "Default parameter group for mariadb10.1",
+"DBParameterGroupArn": "arn:aws:rds:us-east-1:123456789012:pg:default.mariadb10.1"
+},
+...some output truncated...
+]
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-parameters
+–
+This command returns the detailed parameter list for a particular DB parameter group.
+
+
+
+Example:
+
+
+
+aws rds describe-db-parameters --db-parameter-group-name mydbpg
+
+ 
+
+{
+
+    "Parameters": [
+
+        {
+
+            "ParameterName": "allow-suspicious-udfs",
+
+            "Description": "Controls whether user-defined functions that have only an xxx symbol for the main function can be loaded",
+
+            "Source": "engine-default",
+
+            "ApplyType": "static",
+
+            "DataType": "boolean",
+
+            "AllowedValues": "0,1",
+
+            "IsModifiable": false,
+
+            "ApplyMethod": "pending-reboot"
+
+        },
+
+        {
+
+            "ParameterName": "auto_generate_certs",
+
+            "Description": "Controls whether the server autogenerates SSL key and certificate files in the data directory, if they do not already exist.",
+
+            "Source": "engine-default",
+
+            "ApplyType": "static",
+
+            "DataType": "boolean",
+
+            "AllowedValues": "0,1",
+
+            "IsModifiable": false,
+
+            "ApplyMethod": "pending-reboot"
+
+        },
+
+        ...some output truncated...
+
+    ]
+
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-security-groups
+–
+This command returns a list of DBSecurityGroup descriptions. If a DBSecurityGroupName is specified, the list will contain only the descriptions of the specified DB security group.
+
+
+Example
+
+
+
+aws rds describe-db-security-groups
+
+{
+"DBSecurityGroups": [
+{
+"OwnerId": "123456789012",
+"DBSecurityGroupName": "default",
+"DBSecurityGroupDescription": "default",
+"EC2SecurityGroups": [],
+"IPRanges": [],
+"DBSecurityGroupArn": "arn:aws:rds:us-west-1:111122223333:secgrp:default"
+},
+{
+"OwnerId": "123456789012",
+"DBSecurityGroupName": "mysecgroup",
+"DBSecurityGroupDescription": "My Test Security Group",
+"VpcId": "vpc-1234567f",
+"EC2SecurityGroups": [],
+"IPRanges": [],
+"DBSecurityGroupArn": "arn:aws:rds:us-west-1:111122223333:secgrp:mysecgroup"
+}
+]
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-snapshots
+–
+This command returns information about DB snapshots.
+
+
+Example
+
+
+
+aws rds describe-db-snapshots --db-snapshot-identifier mydbsnapshot
+
+
+
+{
+"DBSnapshots": [
+{
+"DBSnapshotIdentifier": "mydbsnapshot",
+"DBInstanceIdentifier": "mysqldb",
+"SnapshotCreateTime": "2018-02-08T22:28:08.598Z",
+"Engine": "mysql",
+"AllocatedStorage": 20,
+"Status": "available",
+"Port": 3306,
+"AvailabilityZone": "us-east-1f",
+"VpcId": "vpc-6594f31c",
+"InstanceCreateTime": "2018-02-08T22:24:55.973Z",
+"MasterUsername": "mysqladmin",
+"EngineVersion": "5.6.37",
+"LicenseModel": "general-public-license",
+"SnapshotType": "manual",
+"OptionGroupName": "default:mysql-5-6",
+"PercentProgress": 100,
+"StorageType": "gp2",
+"Encrypted": false,
+"DBSnapshotArn": "arn:aws:rds:us-east-1:123456789012:snapshot:mydbsnapshot",
+"IAMDatabaseAuthenticationEnabled": false,
+"ProcessorFeatures": [],
+"DbiResourceId": "db-AKIAIOSFODNN7EXAMPLE"
+}
+]
+}  
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-instance-automated-backups
+–
+This command displays backups for both current and deleted instances.
+
+Example
+
+aws rds describe-db-instance-automated-backups \
+
+    --db-instance-identifier new-orcl-db
+
+{
+
+    "DBInstanceAutomatedBackups": [
+
+        {
+
+            "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:new-orcl-db",
+
+            "DbiResourceId": "db-JKIB2GFQ5RV7REPLZA4EXAMPLE",
+
+            "Region": "us-east-1",
+
+            "DBInstanceIdentifier": "new-orcl-db",
+
+            "RestoreWindow": {
+
+                "EarliestTime": "2020-12-07T21:05:20.939Z",
+
+                "LatestTime": "2020-12-07T21:05:20.939Z"
+
+            },
+
+            "AllocatedStorage": 20,
+
+            "Status": "replicating",
+
+            "Port": 1521,
+
+            "InstanceCreateTime": "2020-12-04T15:28:31Z",
+
+            "MasterUsername": "admin",
+
+            "Engine": "oracle-se2",
+
+            "EngineVersion": "12.1.0.2.v21",
+
+            "LicenseModel": "bring-your-own-license",
+
+            "OptionGroupName": "default:oracle-se2-12-1",
+
+            "Encrypted": false,
+
+            "StorageType": "gp2",
+
+            "IAMDatabaseAuthenticationEnabled": false,
+
+            "BackupRetentionPeriod": 14,
+
+            "DBInstanceAutomatedBackupsArn": "arn:aws:rds:us-west-2:123456789012:auto-backup:ab-jkib2gfq5rv7replzadausbrktni2bn4example"
+
+        }
+
+    ]
+
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-db-subnet-groups
+–
+This command returns a list of DBSubnetGroup descriptions. If a DBSubnetGroupName is specified, the list will contain only the descriptions of the specified DBSubnetGroup.
+
+
+Example
+
+aws rds describe-db-subnet-groups
+
+{
+"DBSubnetGroups": [
+{
+"DBSubnetGroupName": "mydbsubnetgroup",
+"DBSubnetGroupDescription": "My DB Subnet Group",
+"VpcId": "vpc-971c12ee",
+"SubnetGroupStatus": "Complete",
+"Subnets": [
+{
+"SubnetIdentifier": "subnet-d8c8e7f4",
+"SubnetAvailabilityZone": {
+"Name": "us-east-1a"
+},
+"SubnetStatus": "Active"
+},
+{
+"SubnetIdentifier": "subnet-718fdc7d",
+"SubnetAvailabilityZone": {
+"Name": "us-east-1f"
+},
+"SubnetStatus": "Active"
+},
+{
+"SubnetIdentifier": "subnet-cbc8e7e7",
+"SubnetAvailabilityZone": {
+"Name": "us-east-1a"
+},
+"SubnetStatus": "Active"
+},
+{
+"SubnetIdentifier": "subnet-0ccde220",
+"SubnetAvailabilityZone": {
+"Name": "us-east-1a"
+},
+"SubnetStatus": "Active"
+}
+],
+"DBSubnetGroupArn": "arn:aws:rds:us-east-1:123456789012:subgrp:mydbsubnetgroup"
+}
+]
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+describe-pending-maintenance-actions
+–
+This command returns a list of resources (for example, DB instances) that have at least one pending maintenance action.
+
+
+Example
+
+
+
+aws rds describe-pending-maintenance-actions 
+
+{
+"PendingMaintenanceActions": [
+{
+"ResourceIdentifier": "arn:aws:rds:us-west-2:123456789012:cluster:global-db1-cl1",
+"PendingMaintenanceActionDetails": [
+{
+"Action": "system-update",
+"Description": "Upgrade to Aurora PostgreSQL 2.4.2"
+}
+]
+}
+]
+}
+

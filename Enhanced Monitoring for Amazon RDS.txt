@@ -1,0 +1,73 @@
+Enhanced Monitoring for Amazon RDS
+
+Enhanced monitoring provides deeper visibility into the health of your DB instances by collecting operating system (OS) metrics and process information at a defined granularity.
+
+How to Enable Enhanced Monitoring
+
+1. Grant Permissions  
+   - Enhanced monitoring requires an IAM role to send OS metric information to CloudWatch Logs.  
+   - You can create this IAM role when enabling enhanced monitoring or beforehand.
+
+2. Steps to Enable or Disable Enhanced Monitoring via Console  
+   1. Sign in to the AWS Management Console and open the Amazon RDS console at https://console.aws.amazon.com/rds.  
+   2. Choose "Databases" and select a DB instance.  
+   3. Click "Modify" and go to the "Additional configuration" section.  
+   4. Under "Monitoring," enable "Enhanced monitoring" and specify:  
+      - Granularity value.  
+      - Monitoring Role.  
+   5. Choose "Continue."  
+   6. Verify the "Summary of modifications."  
+      - For "Scheduling of modifications," select "Apply immediately."  
+   7. Click "Modify DB instance" and wait for the changes to be applied.
+
+Viewing OS Metrics in the Amazon RDS Console
+
+1. Access Enhanced Monitoring  
+   - Navigate to the Enhanced Monitoring page to view OS metrics.
+
+2. Key Graphs and Metrics  
+   - Physical Device Write IOPS:  
+     - Displays metrics for each disk used by the DB instance.  
+     - On instances with multiple disks, metrics for all disks are shown.  
+
+   - Write KB per Second:  
+     - Aggregated disk I/O and file system metrics.  
+     - rdsdev device relates to /rdsdbdata (database files and logs).  
+     - Filesystem device relates to / (root file system for OS files).  
+
+3. Multi-AZ Instances  
+   - For Multi-AZ deployments, you can view OS metrics for both:  
+     - Primary instance.  
+     - Standby replica.  
+   - Use the Enhanced Monitoring view to toggle between "Primary" and "Secondary."
+
+4. OS Processes  
+   - View the list of processes running on the DB instance using the OS process list.
+
+Enhanced Monitoring Metrics in the Process List
+
+1. Amazon RDS Child Processes  
+   - Displays metrics for processes that support the DB instance (e.g., mysqld for MySQL).  
+   - Process threads appear nested beneath the parent process.  
+   - CPU utilization is shown for threads, while other metrics are shared across threads.  
+   - The console shows up to 100 processes and threads, prioritizing the top 50 consumers of CPU and memory.
+
+2. Amazon RDS Processes  
+   - Summarizes resources used by the RDS management agent, diagnostics processes, and other AWS services.
+
+3. OS Processes  
+   - Displays metrics for kernel and system processes, which usually have minimal performance impact.
+
+Items Listed for Each Process
+
+1. VIRT  
+   - Virtual size of the process.
+
+2. RES  
+   - Actual physical memory being used by the process.
+
+3. CPU%  
+   - Percentage of total CPU bandwidth used by the process.
+
+4. MEM%  
+   - Percentage of total memory used by the process.

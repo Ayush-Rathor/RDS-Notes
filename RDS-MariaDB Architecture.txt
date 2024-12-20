@@ -1,0 +1,58 @@
+---
+
+RDS for MariaDB Architecture and Use Cases  
+
+How is Amazon RDS for MariaDB Used to Architect a Cloud Solution?  
+
+Amazon RDS for MariaDB is commonly used in a three-tier architecture:  
+1. User Interface Tier  
+2. Application Tier  
+3. Data Tier  
+
+Key Features:  
+- Managed Database:  
+  - Eliminates the need for manual server provisioning and database maintenance.  
+- Architecting for Scale:  
+  1. Push-button scaling supports increased user traffic.  
+  2. Scale the primary instance with minimal downtime.  
+  3. Scale read traffic through read replicas.  
+- High Availability:  
+  - Multi-AZ deployments ensure uptime even during an Availability Zone failure.  
+
+---
+
+Basic Technical Concepts of Amazon RDS for MariaDB:  
+1. Understanding of Amazon VPC for secure network environments.  
+2. Familiarity with networking concepts such as subnets and security groups.  
+3. Basic knowledge of Linux shell commands.  
+4. Understanding of SQL commands for database interactions.  
+
+---
+
+Typical Use Cases for Amazon RDS for MariaDB:  
+1. Web and Mobile Applications:  
+   - Acts as the database layer for web or mobile apps.  
+   - Simplifies deployment without managing physical servers.  
+2. Relational Database for Transactions:  
+   - Fully ACID-compliant for data integrity and transaction efficiency.  
+3. Open Source Applications:  
+   - Cost-effective database solution under the GNU General Public License.  
+   - No licensing costs or vendor lock-ins.  
+
+---
+
+Key Considerations for Amazon RDS for MariaDB:  
+
+1. Rightsizing:  
+   - Assess compute, memory, and storage needs.  
+   - Plan for workload intensity (e.g., I/O or in-memory processing).  
+
+2. Networking:  
+   - Configure Amazon VPC, subnets, and security groups before deployment.  
+   - Review default settings to ensure alignment with application needs.  
+
+3. Security:  
+   - Follow the principle of least privilege for resource access.  
+   - Use IAM for secure, fine-grained access control.  
+
+---

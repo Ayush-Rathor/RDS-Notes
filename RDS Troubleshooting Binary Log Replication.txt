@@ -1,0 +1,70 @@
+RDS Troubleshooting Binary Log Replication
+
+### Overview of Binary Logs
+1. Purpose of Binary Logs
+   - MySQL uses binary logs (binlogs) to replicate changes from the source instance to replica instances.
+   - Updates and changes from the source are written as events to the binary log.
+   - Replicas read the binary log from the source and replay the events on their local databases to maintain synchronization.
+
+2. Additional Uses
+   - Binary logs can be used for point-in-time recovery.
+   - After restoring the last full backup, replay events from the binary logs to recover to a more recent state.
+
+3. Configuring Binary Logs
+   - Select the logging format using the `binlog_format` parameter in the DB instance's parameter group.
+   - Supported formats:
+     1. STATEMENT: Logs are statement-based.
+     2. ROW: Logs are row-based.
+     3. MIXED: Logs use a mixed format.
+   - The `binlog_format` parameter is static and requires a manual reboot of the DB instance for changes to take effect.
+   - To verify binary logs, use the command: `SHOW BINARY LOGS`.
+
+---
+
+### Troubleshooting Binary Log Replication Issues
+
+1. Identify Replication Lag
+   - Indicators of replication lag:
+     1. CloudWatch metric `ReplicaLag` is increasing.
+     2. `SHOW SLAVE STATUS` on the Read Replica shows a high `seconds_behind_master` value.
+     3. Reports of out-of-date data on queries from the Read Replica.
+
+2. Collect Data
+   - Use CloudWatch metrics and graphs:
+     1. Monitor `Replication Lag` on the Read Replica.
+     2. Check activity metrics on the source DB instance contributing to lag.
+   - Investigate replica threads:
+     1. Determine if the lag is caused by `IO_THREAD` or `SQL_THREAD`.
+   - Analyze slow logs on the source DB instance to identify long-running queries.
+   - Check CloudWatch Logs for database logs.
+   - Use the command `SHOW ENGINE INNODB STATUS` to review locks and transaction states.
+   - Identify active transactions using: `SHOW FULL PROCESSLIST`.
+   - Verify `binlog_format` parameter on the source DB instance.
+
+3. Analyze Data
+   - Identify the onset of replication lag using the `ReplicaLag` metric.
+   - Review CloudWatch graphs for workload spikes, such as high `BinLogDiskUsage`, `WriteLatency`, or `WriteIOPS` on the source instance.
+   - Compare configurations between the source and replica instances:
+     1. Check if the replica has smaller resources (instance class or storage type).
+   - Examine slow logs for long-running queries.
+   - Identify potential locking issues on primary instance tables.
+   - Confirm the use of an appropriate `binlog_format` setting.
+
+4. Apply Possible Solutions
+   - Heavy Write Workload:
+     1. Distribute write activities evenly across smaller transactions.
+   - Replica Resource Mismatch:
+     1. Scale up the Read Replica to match or exceed the source instance's resources.
+   - Long-Running Queries:
+     1. Tune queries to break them into smaller transactions.
+   - Active Transactions:
+     1. Terminate long-running queries with `CALL mysql.rds_kill(PID)`.
+   - Binary Log Synchronization:
+     1. Set `sync_binlog` to `1` on the replica to reduce performance overhead.
+   - Missing Primary Key:
+     1. Add an explicit primary key to tables on the source instance if `binlog_format` is set to ROW.
+
+5. Verify Replication Lag is Reduced
+   - Use CloudWatch metrics to confirm `ReplicaLag` is decreasing or near zero.
+   - Check `SHOW SLAVE STATUS` to see `seconds_behind_master` is at or near `0`.
+   - If issues persist, gather data and submit a case to AWS Support.

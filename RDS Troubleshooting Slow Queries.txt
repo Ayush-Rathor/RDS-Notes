@@ -1,0 +1,86 @@
+Troubleshooting Slow Queries
+
+Slow query logs are a MySQL feature that helps identify and analyze queries taking a long time to execute. Follow these steps to enable, view, analyze, and optimize slow queries effectively.
+
+-> How to enable slow query logs, steps:
+
+1. Modify the DB instance to export a slow query log:
+     1. Open the AWS Management Console and select RDS under Services.
+     2. In the navigation pane, choose Databases.
+     3. Select the database by clicking the circle to the left of its row.
+     4. Click Modify.
+     5. Scroll down to the Log exports section and select Slow query log.
+     6. Scroll to the bottom of the page and choose Continue.
+     7. Click Modify instance.
+   - Notes:
+     - Updating the instance configuration may take 2–3 minutes.
+     - Refresh the browser to check the status of the DB instance. Once the status changes to Available, proceed to the next steps.
+
+2. View Slow Query Logs
+   - Choose the instance in the RDS console.
+   - Go to the Logs & events tab of the instance.
+   - Scroll to the Logs section and locate slowquery/mysql-slowquery.log in the Name column.
+   - Select the log and click View to open the Viewing Log window.
+   - If the log_output parameter is set to TABLE, query the log tables using the command:
+     SELECT * FROM mysql.slow_log;
+   - Notes:
+     - Table logging may impact database performance for high-throughput workloads.
+     - Consider creating CloudWatch metrics for better data visualization.
+
+-> How to review the slow query logs in CloudWatch and create a dashboard, steps:
+
+1. Select the slow query log group:
+     1. Open the AWS Management Console and select CloudWatch under Services.
+     2. In the navigation pane, choose Log groups under the Logs section.
+     3. Locate the log group ending in slowquery, which contains logs for queries that exceed the configured threshold.
+2. Configure the query:
+     1. Navigate to Logs Insights in the CloudWatch console.
+     2. From the Select log group(s) dropdown, choose the relevant log group (slowquery).
+     3. Clear the query commands box and paste the following commands:
+        fields @message
+        | sort @timestamp desc
+        | filter @logStream like /database-7/
+        | filter @message like /# User@Host: admin/
+        | limit 20
+     4.These commands filter log messages for:
+        - database-7
+        - # User@Host: admin
+3. Run the query and add results to a dashboard:
+     1. Click Run query to display the filtered slow query messages.
+     2. Choose Add to dashboard.
+     3. In the Add to dashboard window:
+        - Select an existing dashboard or create a new one.
+        - Click Add to dashboard.
+     4. The log group /aws/rds/instance/database-7/slowquery table will be added to the selected dashboard.
+4. Configure the refresh interval:
+     1. Choose Save dashboard.
+     2. Click Display interval for the dashboard.
+     3. Select the dropdown near the refresh icon at the top of the page and configure:
+        - Auto refresh
+        - Refresh interval: 1 minute
+     4. Expand each log to view details. You will see Query_time and the SQL statement in the log.
+   - Notes:
+     - This dashboard can be used frequently. Keeping this tab open helps you monitor performance improvements after optimizing queries.
+
+-----------------------------
+Troubleshooting Slow Queries
+   - Identify the problem:
+     - Report performance issues and note slowness in specific queries.
+   - Collect data:
+     1. Monitor workload patterns to identify when performance issues began.
+     2. Use CloudWatch metrics to observe resources over time.
+     3. Check for other processes impacting database performance.
+     4. Enable slow query logs by modifying the slow_query_log, long_query_time, and log_output parameters in the associated parameter group.
+     5. Run the SHOW FULL PROCESSLIST command with enhanced monitoring to view current operations.
+     6. Use SHOW ENGINE INNODB STATUS for insights into transaction processing, waits, and deadlocks.
+     7. Collect the execution plan for the slow query.
+   - Analyze data:
+     - Verify if query statistics are updated.
+     - Identify transaction blocks.
+     - Check if the query execution plan uses appropriate indexes.
+     - Analyze wait events in Performance Insights.
+   - Apply possible solutions:
+     1. Update query statistics using the ANALYZE TABLE command.
+     2. Add indexes to improve query execution plans.
+     3. Profile slow queries and fine-tune them.
+     4. Resolve blocking transactions.

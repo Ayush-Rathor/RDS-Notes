@@ -1,0 +1,73 @@
+# Introduction to Amazon RDS for MariaDB  
+
+## What Does Amazon RDS for MariaDB Do?  
+
+MariaDB is an open-source database framework, developed by the original creators of MySQL, and remains free and open-source under the GNU General Public License.  
+
+With Amazon RDS for MariaDB, you can:  
+- Run the MariaDB database engine on Amazon RDS.  
+- Use compatible code, applications, and tools with ease.  
+- Eliminate administrative tasks such as hardware provisioning, database setup, patching, and backups.  
+
+Amazon RDS supports several MariaDB versions, allowing seamless integration with existing workflows.  
+
+---
+
+## What Problems Does Amazon RDS for MariaDB Solve?  
+
+Managing on-premises MariaDB databases requires significant effort in:  
+- Administrative tasks.  
+- Maintenance of physical resources.  
+
+Amazon RDS for MariaDB addresses these challenges by enabling users to:  
+1. Automate database management with updates, notifications, and metrics.  
+2. Achieve high performance using provisioned IOPS storage backed by SSDs.  
+3. Conduct backups and recovery with point-in-time recovery capabilities.  
+4. Scale databases with push-button scaling for storage and compute.  
+5. Ensure high availability through Multi-AZ deployments and read replicas.  
+6. Secure data with AWS KMS encryption and Amazon VPC isolation.  
+
+---
+
+## Benefits of Amazon RDS for MariaDB  
+
+### Storage Engine Flexibility  
+- Supports InnoDB and MyRocks (from version 10.6 onward), offering flexibility based on workload needs.  
+
+### Managed Deployment  
+- Simplifies deployment by preconfiguring settings and parameters.  
+
+### High Availability  
+- Multi-AZ deployments enhance durability and initiate automatic failovers during failures.  
+
+### Read Replica  
+- Supports up to five read replicas for scaling read-heavy workloads.  
+
+### Automated Backup and Recovery  
+- Automates backups during defined windows and supports up to 35-day retention with point-in-time recovery.  
+
+### Monitoring and Metrics  
+- Provides enhanced monitoring and CloudWatch metrics to assess database performance.  
+
+### Security Controls  
+- Includes encryption at rest (AWS KMS) and in transit (SSL) with database isolation in Amazon VPC.  
+
+---
+
+## How Much Does Amazon RDS for MariaDB Cost?  
+
+### Key Pricing Factors  
+- Instance type.  
+- Storage size.  
+- AWS Region.  
+
+### On-Demand Instances  
+- Pay hourly with no long-term commitments.  
+- Reduces upfront costs and enables flexibility.  
+
+### Reserved Instances  
+- Commit to 1- or 3-year terms for significant discounts.  
+- Payment options: No Upfront, Partial Upfront, All Upfront.
+For detailed cost estimates, use the AWS Pricing Calculator.  
+
+---  

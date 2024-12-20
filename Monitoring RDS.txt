@@ -1,0 +1,68 @@
+---
+
+Monitoring Amazon RDS  
+
+AWS provides various monitoring tools to watch Amazon RDS, report when something is wrong, and take automatic actions when appropriate.
+
+---
+
+Automated Monitoring Tools:  
+
+1. Amazon RDS Instance Status:  
+   - Provides details about the current status of your instance.  
+   - Example: Database-1 has a status of "available."  
+
+2. Recommendations Tab:  
+   - Offers actionable advice to improve performance and monitoring capabilities.  
+   - Example: Enhanced monitoring is not enabled on two DB instances. One is running on a classic EC2 instance, and one is running on magnet storage.  
+
+3. Amazon CloudWatch Integration:  
+   - Provides additional monitoring capabilities.  
+   - Includes CloudWatch metrics and CloudWatch alarms.  
+   - Example: Database-1 is idle with minimal activity.  
+
+4. CloudWatch Metrics:  
+   - Includes CPU utilization, DB connections, free storage space, freeable memory, and read/write IOPS.  
+
+---
+
+Amazon RDS Performance Insights and Operating-System Monitoring:  
+
+1. Amazon RDS Performance Insights:  
+   - Helps assess the load on your database.  
+
+2. Enhanced Monitoring:  
+   - Allows you to view metrics in real-time for the operating system.  
+   - Example: No SQL statements are running against the DB instance "database-1."  
+
+3. Database Load Metrics:  
+   - Metrics include total memory, active memory, and free memory.  
+
+4. Enhanced Monitoring View:  
+   - Shows the resources used by the DB instance, such as free memory, active memory, page tables, CPU usage, and used filesystem.  
+
+5. Operating System Processes:  
+   - Displays system processes and the resources they are consuming. It is similar to the "top" command in Linux.  
+
+---
+
+Integrated Services:  
+
+1. Amazon EventBridge  
+2. Amazon CloudWatch Logs  
+3. AWS CloudTrail  
+4. Database Activity Streams  
+
+These services provide additional monitoring and logging capabilities.
+
+---
+
+Manual Monitoring Tools:  
+
+1. Amazon CloudWatch Dashboards:  
+   - Provides dashboards for Amazon RDS, CloudWatch, AWS Trusted Advisor, and other AWS Management Console dashboards.  
+
+2. MySQL Log Files:  
+   - Available from the Amazon RDS console and AWS CLI for manual review.  
+
+---

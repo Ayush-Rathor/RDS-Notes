@@ -1,0 +1,23 @@
+Amazon RDS Introduction
+
+Amazon Relational Database Service (Amazon RDS) is a service that makes it easier to set up, operate, and scale a relational database in the cloud. It provides cost-efficient, resizable capacity for an industry-standard relational database and manages common database administration tasks.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Amazon RDS Technical Overview
+
+Amazon Relational Database Service (Amazon RDS) is a distributed relational database managed service. It is cloud-based and designed to simplify the setup, operation, and scaling of relational databases. Administrative processes like patching, backing up databases, and enabling point-in-time recovery are managed automatically.
+
+This service primer covers the way that Amazon RDS can integrate with other AWS services, technical terminology important to the service, database security, and real-world customer use cases.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Disaster recovery architecture
+
+Amazon RDS for Oracle commonly runs mission critical databases. If anything were to happen to these databases, it would be devastating. This architecture is one option for creating a disaster recovery solution for the databases.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Real-time data analytics architecture
+
+Amazon RDS databases are busy places. When real-time data analytics are run directly against the Amazon RDS database, it can cause latency. One solution is to create an architecture that moves these records off the database for analysis.

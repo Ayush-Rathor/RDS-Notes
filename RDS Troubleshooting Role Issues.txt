@@ -1,0 +1,35 @@
+Troubleshooting Role Issues
+
+Understanding IAM and IAM role issues is crucial for managing access and permissions within AWS. IAM database authentication allows users to authenticate a DB instance without a password, using an authentication token instead. Below are detailed steps to identify, analyze, and resolve IAM-related issues.
+
+1. Identify the Exact IAM Error
+   - Common examples of IAM errors:
+     1. `User: arn:aws:iam::123456789012:user/mateojackson is not authorized to perform: rds:GetWidget on resource: my-example-widget`
+     2. `User: arn:aws:iam::123456789012:user/marymajor is not authorized to perform: iam:PassRole`
+
+2. Collect Data
+   - Gather the following information:
+     1. IAM policies associated with the IAM user facing the issue.
+     2. The exact connect command used for IAM authentication.
+     3. The AWS Account ID of the IAM user and the resource being accessed.
+     4. Confirm whether the user is attempting to log in using a password instead of an authentication token.
+
+3. Analyze Data
+   - Validate and analyze the collected data:
+     1. Ensure the generated authentication token is valid. Note: Tokens expire after 15 minutes and cannot be refreshed; they must be regenerated.
+     2. Verify the exact action and resource associated with the error.
+     3. Check IAM user permissions using the attached IAM policies.
+     4. Confirm whether the AWS account is part of AWS Organizations. If so:
+        - Add `rds-db:*` to the Service Control Policy (SCP) of the organizational unit to which the account belongs.
+
+4. Apply Possible Solutions
+   - Resolve the issue based on the analysis:
+     1. If the IAM user lacks permissions:
+        - Contact the administrator to update policies, granting the user access to the required resource by allowing the specific action.
+        - The administrator can be identified as the person who provided the IAM user credentials.
+     2. For `iam:PassRole` errors:
+        - Ensure the IAM user has permissions to pass the role to the service.
+        - Update policies to allow the `iam:PassRole` action if necessary.
+     3. Check and correct the connect command:
+        - Ensure all required options, including SSL details, are provided.
+        - Note: SSL connections are mandatory for IAM authentication.
